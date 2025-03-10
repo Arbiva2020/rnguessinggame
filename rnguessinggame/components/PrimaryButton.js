@@ -1,6 +1,6 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
 
-function PrimaryButton({ children }) {
+function PrimaryButton({ children, onPressButton }) {
   function handlePress() {
     console.log("Pressed!");
   }
@@ -8,9 +8,15 @@ function PrimaryButton({ children }) {
   return (
     <View style={styles.buttonOuterContainer}>
       <Pressable
-        onPress={handlePress}
+        onPress={onPressButton}
         android_ripple={{ color: "#640233" }}
-        style={styles.buttonInnerContainer}
+        //arrays of fstyle objects:
+        //styles can also hold an arrow function to elaborate on conditional styling, for example. Notice that the "pressed" is a constant react native property!
+        style={({ pressed }) =>
+          pressed
+            ? [styles.buttonInnerContainer, styles.pressedforIos]
+            : styles.buttonInnerContainer
+        }
       >
         <Text style={styles.buttonText}>{children}</Text>
       </Pressable>
@@ -35,5 +41,8 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     textAlign: "center",
+  },
+  pressedforIos: {
+    opacity: 0.75,
   },
 });

@@ -1,7 +1,30 @@
-import { TextInput, View, StyleSheet } from "react-native";
+import { TextInput, View, StyleSheet, Alert } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
+import { useState } from "react";
 
 function StartGameScreen() {
+  const [enteredValue, setEnteredValue] = useState("");
+
+  function numberInputHandler(enteredText) {
+    setEnteredValue(enteredText);
+  }
+
+  function resetInputHandler() {
+    setEnteredValue("");
+  }
+
+  function confirmInputHandler() {
+    const chosenNumber = parseInt(enteredValue);
+
+    if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
+      Alert.alert("Invalid number", "Number has to hold velues between 1-99", [
+        { text: "OK", style: "destructive", onPress: resetInputHandler },
+      ]);
+      return;
+    }
+    console.log("valid!");
+  }
+
   return (
     <View style={styles.inputContainer}>
       <TextInput
@@ -10,9 +33,19 @@ function StartGameScreen() {
         keyboardType="number-pad"
         autoCapitalize="none"
         autoCorrect={false}
+        value={enteredValue}
+        onChangeText={numberInputHandler}
       />
-      <PrimaryButton>Reset</PrimaryButton>
-      <PrimaryButton>Confirm</PrimaryButton>
+      <View style={styles.buttonView}>
+        <View style={styles.buttonContainer}>
+          <PrimaryButton onPressButton={resetInputHandler}>Reset</PrimaryButton>
+        </View>
+        <View style={styles.buttonContainer}>
+          <PrimaryButton onPressButton={confirmInputHandler}>
+            Confirm
+          </PrimaryButton>
+        </View>
+      </View>
     </View>
   );
 }
@@ -21,6 +54,8 @@ export default StartGameScreen;
 
 const styles = StyleSheet.create({
   inputContainer: {
+    justifyContent: "center",
+    alignItems: "center",
     // flex: 1,
     padding: 14,
     marginTop: 100,
@@ -45,5 +80,11 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  buttonView: {
+    flexDirection: "row",
+  },
+  buttonContainer: {
+    flex: 1,
   },
 });
