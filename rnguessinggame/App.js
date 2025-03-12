@@ -13,7 +13,7 @@ import GameScreen from "./screens/GameScreen";
 import Colors from "./constants/colors";
 import GameOverScreen from "./screens/GameOverScreen";
 import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
+import * as SplashScreen from 'expo-splash-screen';
 
 export default function App() {
   const [userNumber, setUserNumber] = useState();
@@ -26,9 +26,9 @@ export default function App() {
     "open-sans": require("./assets/fonts/OpenSans-Bold.ttf"),
   });
 
-  if (!fontsLoaded) {
-    return <SplashScreen />;
-  }
+  // if (!fontsLoaded) {
+  //   return <SplashScreen />;
+  // }
 
   function pickedNumberHandler(pickedNumber) {
     setUserNumber(pickedNumber);
