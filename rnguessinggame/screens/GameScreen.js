@@ -1,4 +1,4 @@
-import { View, StyleSheet, Alert, Text } from "react-native";
+import { View, StyleSheet, Alert, Text, FlatList } from "react-native";
 import Title from "../components/ui/Title";
 import { useState, useEffect } from "react";
 import NumberContainer from "../components/game/NumberContainer";
@@ -17,18 +17,27 @@ function generateRandomBetween(min, max, exclude) {
   }
 }
 
+//These veriables will be defined outside of the component function because they need to be independent, so in the guessing process they will not go back to their initial values:
+//When do we reset them? when a new game starts
 let minBoundary = 1;
 let maxBoundary = 100;
 
 function GameScreen({ userNumber, onGamrOver }) {
   const initialGuess = generateRandomBetween(1, 100, userNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
+  const [guessRounds, setGuessRounds] = useState([initialGuess]);
 
   useEffect(() => {
     if (currentGuess === userNumber) {
       onGamrOver();
     }
   }, [currentGuess, userNumber, onGamrOver]);
+
+  //This useEffect is for reseting variables only when a new game starts:
+  useEffect(() => {
+    minBoundary = 1;
+    maxBoundary = 100;
+  }, []);
 
   function nextGuessHandler(direction) {
     //direction => 'lower', 'greater'
@@ -50,12 +59,14 @@ function GameScreen({ userNumber, onGamrOver }) {
       console.log("greater");
     }
     console.log(minBoundary, maxBoundary);
+
     const newRndNumber = generateRandomBetween(
       minBoundary,
       maxBoundary,
       currentGuess
     );
     setCurrentGuess(newRndNumber);
+    setGuessRounds((prevGuessRounds) => [newRndNumber, ...prevGuessRounds]);
     console.log("press");
   }
 
@@ -82,7 +93,14 @@ function GameScreen({ userNumber, onGamrOver }) {
           </View>
         </View>
       </Card>
-      {/* <View>LOG ROUNDS</View> */}
+      {/* the "guessRounds" can serve as a uniqe key because we can only guess every number once */}
+      {/* for short lists: */}
+      {/* <View>{guessRounds.map(guessRounds => <Text key={guessRounds}>{guessRounds}</Text>)}</View> */}
+      <FlatList
+        data={guessRounds}
+        renderItem={(itemData) => <Text>{itemData.item}</Text>}
+        keyExtractor={(item) => item}
+      />
     </View>
   );
 }
