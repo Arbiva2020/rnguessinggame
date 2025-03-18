@@ -33,7 +33,7 @@ function StartGameScreen({ onPickedNumber }) {
     <View style={styles.rootContainer}>
       <Title>Guess my number</Title>
       <Card>
-        <InstructionText>Enter a number</InstructionText>
+        <InstructionText>Enter number</InstructionText>
         <TextInput
           style={styles.numberInput}
           maxLength={2}
