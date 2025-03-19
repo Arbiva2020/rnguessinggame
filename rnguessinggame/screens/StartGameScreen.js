@@ -50,7 +50,7 @@ function StartGameScreen({ onPickedNumber }) {
         <View style={[styles.rootContainer, { marginTop: marginTopDistance }]}>
           <Title>Guess my number</Title>
           <Card>
-            <InstructionText>Enter number</InstructionText>
+            <InstructionText>Enter_number</InstructionText>
             <TextInput
               style={styles.numberInput}
               maxLength={2}
